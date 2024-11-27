@@ -1,18 +1,18 @@
 from models.user import User
 from models.account import Account
 class BankingService:
-    users = []
-    def __init__(self,username:str) -> None:
-        self.user = User()
+    def __init__(self) -> None:
+        self.users = []
         self.account = Account()
-        self.username = username
 
     def add_user(self, username: str) -> None:
-        self.users.append(username)
+        self.users.append(User(username))
 
     def find_user(self, username:str) -> User:
         try:
-           return self.user(username)
+            for i in self.users:
+                if i == username:
+                    return username
         except Exception:
             print("없는 사용자입니다.")
             
@@ -25,8 +25,8 @@ class BankingService:
                     amount = int(input("입금할 금액을 입력하세요: "))
                     self.account.deposit(amount)
                 if menu == "2" or menu == "출금":
-                   amount = int(input("출금할 금액을 입력하세요: "))
-                   self.account.withdraw(amount)
+                    amount = int(input("출금할 금액을 입력하세요: "))
+                    self.account.withdraw(amount)
                 if menu == "3" or menu == "잔액확인":
                     self.account.get_balance()
                 if menu == "4" or menu == "거래내역":
