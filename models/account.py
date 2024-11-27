@@ -1,8 +1,14 @@
-class Account():
-    bank_name = ""
+from models.transaction import Transaction
+from utils.decorators import validate_transaction
+from utils.exceptions import  InsufficientFundsError, NegativeAmountError
 
-    def __init__(self, transaction:list[dict], balance:int) -> None:
-        self.transaction = transaction
+
+
+class Account():
+    bank_name = "khs은행"
+
+    def __init__(self,  balance:int) -> None:
+        self.transactions = []
         self.__balance = balance
 
     @classmethod
@@ -11,25 +17,27 @@ class Account():
     @classmethod
     def set_bank_name(cls, name:str)->None:
         cls.bank_name = name
-
+    @validate_transaction
     def deposit(self, amount: int) -> None:
-        if amount >0:
+        if amount > 0:
             self.__balance += amount
-            self.transaction.append({"입금":amount})
+            self.transactions.append(Transaction("입금",amount,self.__balance))
             return self.__balance
         else:
-            print("양수만 입력해 주세요")
-            
+            raise NegativeAmountError()
+        
+    @validate_transaction       
     def withdraw(self, amount: int) -> None:
         if amount <0 :
-            print("양수만 입력해 주세요")
+            raise NegativeAmountError()
         elif amount > self.__balance:
-            print("잔고가 부족합니다.")
+            raise InsufficientFundsError(self.__balance)
         else:
             self.__balance -= amount
-            self.transaction.append({"출금": amount}) 
+            self.transactions.append(Transaction("출금",amount,self.__balance)) 
             return self.__balance
     
+
     def get_balance(self) -> int:
         return self.__balance
     
