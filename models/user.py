@@ -1,3 +1,6 @@
-class User:
-    def __init__(self) -> None:
+from account import Account
+class User():
+    def __init__(self, username:str) -> None:
+        self.username= username
+        self.account = Account()
         pass
