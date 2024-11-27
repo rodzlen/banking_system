@@ -4,7 +4,7 @@ class Transaction:
         self.amount = amount
         self.balance = balance
     def __str__(self) -> str:
-        return f'{self.transaction_type}: {self.amount}원,  잔고 {self.balance}원'
+        return print(f'{self.transaction_type}: {self.amount}원,  잔고 {self.balance}원')
     def to_tuple(self) -> tuple:
         return (self.transaction_type, self.amount, self.balance)
     
