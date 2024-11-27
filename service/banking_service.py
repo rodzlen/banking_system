@@ -1,10 +1,11 @@
-from user import User
-from account import Account
+from models.user import User
+from models.account import Account
 class BankingService:
     users = []
-    def __init__(self) -> None:
+    def __init__(self,username:str) -> None:
         self.user = User()
         self.account = Account()
+        self.username = username
 
     def add_user(self, username: str) -> None:
         self.users.append(username)
@@ -17,16 +18,18 @@ class BankingService:
             
     def user_menu(self, username:str) -> None:
         while True:
-            input_user = input("이름을 입력해 주세요")
-            if username == input_user:
+            if username in self.users:
                 print(f"환영합니다 {username}님 \n 메뉴를 선택해 주세요")
                 menu = input("1. 입금 2. 출금 3. 잔액확인 4. 거래내역".split(' '))
                 if menu == "1" or menu == "입금":
-                    self.account.deposit()
+                    amount = int(input("입금할 금액을 입력하세요: "))
+                    self.account.deposit(amount)
                 if menu == "2" or menu == "출금":
-                   self.account.withdraw()
+                   amount = int(input("출금할 금액을 입력하세요: "))
+                   self.account.withdraw(amount)
                 if menu == "3" or menu == "잔액확인":
                     self.account.get_balance()
                 if menu == "4" or menu == "거래내역":
                     self.account.get_transaction()
-                
+
+    
